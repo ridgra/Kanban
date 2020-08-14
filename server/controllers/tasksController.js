@@ -1,11 +1,17 @@
-const { Task } = require('../models');
+const { Task, User } = require('../models');
 
 class TasksController {
   static async findAll(req, res, next) {
     try {
       // const  UserId  = req.userData.id;
-      const task = await Task.findAll();
-      res.status(200).json({ task });
+      const tasks = await Task.findAll({
+        include: {
+          model: User,
+          attributes: ['email'],
+        },
+        order: [['createdAt']],
+      });
+      res.status(200).json({ tasks });
     } catch (err) {
       next(err);
     }
