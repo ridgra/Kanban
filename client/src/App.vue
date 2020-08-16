@@ -6,6 +6,7 @@
         v-if="activePage == 'loginPage'"
         @signupPage="setPage('signupPage')"
         @login="login"
+        @googleSignIn="googleSignIn"
       ></LoginPage>
       <RegisterPage
         v-if="activePage == 'signupPage'"
@@ -14,11 +15,19 @@
       ></RegisterPage>
       <HomePage
         v-if="activePage == 'homePage'"
+        :user="user"
         @createTask="createTask"
         @logout="logout"
         :categories="categories"
+        @updateCat="updateCat"
+        @deleteCat="deleteCat"
         :tasks="tasks"
         @fetchTasks="fetchTasks"
+        @deleteTask="deleteTask"
+        @updateTask="updateTask"
+        @updateTaskCategory="updateTaskCategory"
+        @createCat="createCat"
+        @homePage="homePage"
       ></HomePage>
       <div></div>
     </div>
@@ -43,11 +52,11 @@ export default {
       activePage: 'homePage',
       categories: [],
       tasks: [],
+      user: '',
     };
   },
   methods: {
     setPage(page) {
-      console.log(page, '<<<');
       this.activePage = page;
     },
 
@@ -56,12 +65,12 @@ export default {
         this.setPage('loginPage');
       } else {
         this.setPage('homePage');
+        this.fetchUser();
         this.fetchCategories();
         this.fetchTasks();
       }
     },
     async login(payload) {
-      console.log(payload);
       try {
         const { data } = await axios({
           url: '/login',
@@ -73,13 +82,26 @@ export default {
         });
         localStorage.access_token = data.access_token;
         this.homePage();
-        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async googleSignIn() {
+      try {
+        const { data } = await axios({
+          url: '/googleSignIn',
+          method: 'post',
+          data: {
+            idToken: localStorage.idToken,
+          },
+        });
+        localStorage.access_token = data.access_token;
+        this.homePage();
       } catch (err) {
         console.log(err);
       }
     },
     async register(payload) {
-      console.log(payload);
       try {
         const { data } = await axios({
           url: '/register',
@@ -90,7 +112,21 @@ export default {
           },
         });
         this.setPage('loginPage');
-        console.log(data);
+        // console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async fetchUser() {
+      try {
+        const { data } = await axios({
+          url: '/user',
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+        // console.log(data, '<<< user.email');
+        this.user = data.user;
       } catch (err) {
         console.log(err);
       }
@@ -109,6 +145,58 @@ export default {
         console.log(err);
       }
     },
+    async createCat(name) {
+      try {
+        const { data } = await axios({
+          url: '/categories',
+          method: 'post',
+          data: {
+            name,
+          },
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+        this.fetchCategories();
+        // console.log(data, '<<< createCat');
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async updateCat(payload) {
+      try {
+        const { id, name } = payload;
+        const { data } = await axios({
+          url: `/categories/${id}`,
+          method: 'put',
+          data: {
+            name,
+          },
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+        this.fetchCategories();
+        // console.log(data, '<<< updated');
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async deleteCat(id) {
+      try {
+        const { data } = await axios({
+          url: `/categories/${id}`,
+          method: 'delete',
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+        this.fetchCategories();
+        // console.log(data, '<<< createCat');
+      } catch (err) {
+        console.log(err);
+      }
+    },
     async createTask(task) {
       try {
         const { data } = await axios({
@@ -122,6 +210,8 @@ export default {
             access_token: localStorage.access_token,
           },
         });
+        this.fetchTasks();
+
         // console.log(data, '<<< createTask');
       } catch (err) {
         console.log(err);
@@ -141,8 +231,67 @@ export default {
         console.log(err);
       }
     },
+    async updateTask(payload) {
+      try {
+        // console.log({ payload });
+        const { id, title } = payload;
+        const { data } = await axios({
+          url: `/tasks/${id}`,
+          method: 'put',
+          headers: {
+            access_token: localStorage.access_token,
+          },
+          data: {
+            title,
+          },
+        });
+        this.fetchTasks();
+        // console.log(data, '<<< updated');
+      } catch (err) {
+        console.log(err.response.data.errors.msg[0].msg);
+      }
+    },
+    async updateTaskCategory(payload) {
+      try {
+        const { id, CategoryId } = payload;
+        const { data } = await axios({
+          url: `/tasks/${id}/cat`,
+          method: 'put',
+          headers: {
+            access_token: localStorage.access_token,
+          },
+          data: {
+            CategoryId,
+          },
+        });
+        this.fetchTasks();
+        // console.log(data, '<<< updated cat');
+      } catch (err) {
+        console.log(err.response.data.errors.msg[0].msg);
+      }
+    },
+    async deleteTask(id) {
+      try {
+        const { data } = await axios({
+          url: `/tasks/${id}`,
+          method: 'delete',
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+        this.fetchTasks();
+        // console.log(data, '<<< deleteTasks');
+      } catch (err) {
+        console.log(err.response.data.errors.msg[0].msg);
+      }
+    },
     logout() {
-      localStorage.clear();
+        // const auth2 = gapi.auth2.getAuthInstance();
+        // auth2.signOut().then(function() {
+        //   console.log('User signed out.');
+        // });
+        localStorage.clear();
+        this.setPage('loginPage');
     },
   },
   created() {
@@ -197,7 +346,4 @@ input::placeholder {
   background-position: top right;
   background-color: #fafafa;
 }
-/* input: {
-  font-weight: 200;
-} */
 </style>

@@ -45,15 +45,12 @@
 </template>
 
 <script>
-// import FormCmp from '../components/FormCmp';
 
 export default {
   components: {
-    // FormCmp,
   },
   data() {
     return {
-      // page: 'Sign up',
       email: '',
       password: '',
     };
@@ -75,4 +72,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style></style>

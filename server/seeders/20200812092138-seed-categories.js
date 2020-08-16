@@ -15,22 +15,22 @@ module.exports = {
       'Categories',
       [
         {
-          name: 'backlog',
+          name: 'Backlog',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          name: 'todo',
+          name: 'Todo',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          name: 'doing',
+          name: 'Doing',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          name: 'done',
+          name: 'Done',
           createdAt: new Date(),
           updatedAt: new Date(),
         },

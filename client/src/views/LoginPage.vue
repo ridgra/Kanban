@@ -10,7 +10,6 @@
           Log in to Tralala!
         </h5>
       </div>
-      <!-- <FormCmp :page="page"></FormCmp> -->
       <div>
         <b-form class @submit.prevent="submit">
           <b-form-group>
@@ -38,13 +37,13 @@
             <span class="font-weight-light text-primary">OR</span>
           </div>
           <div>
-            <b-button
-              @click.prevent
-              class="btn btn-block"
+            <button
+              v-google-signin-button="clientId"
+              class="btn btn-primary btn-block google-signin-button"
               type="button"
-              variant="primary"
-              >Google</b-button
             >
+              Continue with Google
+            </button>
           </div>
         </div>
       </div>
@@ -59,14 +58,13 @@
 </template>
 
 <script>
-
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       email: '',
       password: '',
+      clientId: '781316995666-u8la701llcj94cbbajmr9fao59pm2rbt.apps.googleusercontent.com'
     };
   },
   methods: {
@@ -79,9 +77,16 @@ export default {
         password: this.password,
       };
       this.$emit('login', payload);
-      this.email = ''
-      this.password = ''
+      this.email = '';
+      this.password = '';
     },
+    OnGoogleAuthSuccess (idToken) {
+      localStorage.idToken = idToken
+      this.$emit('googleSignIn')
+    },
+    OnGoogleAuthFail (error) {
+      // console.log(error)
+    }
   },
 };
 </script>
