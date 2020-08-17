@@ -1,6 +1,6 @@
 <template>
-  <div class="col-lg-3 col-md-4 col-sm-4 py-3 mx-2">
-    <h5 class="card-header py-3 pl-3 d-flex justify-content-between mh-100">
+  <div class="d-flex flex-column col-lg-3 col-md-4 col-sm-4 mx-2">
+    <h5 class="card-header py-3 pl-3 d-flex justify-content-between">
       <div
         id="title"
         class="col-9"
@@ -12,6 +12,7 @@
       >
         {{ category.name }}
       </div>
+
       <div>
         <div>
           <b-dropdown
@@ -44,56 +45,58 @@
         </div>
       </div>
     </h5>
+
     <div
       class="card bg-light px-0"
-      style="max-height:50vh; overflow-y:scroll; border:0"
+      style="max-height:55vh; overflow-y:scroll; border:0"
     >
-      <div class="card-body p-3" style="min-height: 25vh;">
-        <draggable
-          :move="checkMove"
-          :list="filteredTasks"
-          group="task"
-          :CatId="category.id"
-          style="min-height:50px"
-          @end="updateCategory"
-        >
-          <Cards
-            v-for="task in filteredTasks"
-            :key="task.id"
-            :task="task"
-            @deleteTask="deleteTask"
-            @updateTask="updateTask"
-            id="cards"
-            :user="user"
+      <div>
+        <div class="card-body p-3" style="min-height: 10vh;">
+          <draggable
+            :move="checkMove"
+            :list="filteredTasks"
+            group="task"
+            :CatId="category.id"
+            style="min-height:50px"
+            @end="updateCategory"
           >
-          </Cards>
-        </draggable>
+            <Cards
+              v-for="task in filteredTasks"
+              :key="task.id"
+              :task="task"
+              @deleteTask="deleteTask"
+              @updateTask="updateTask"
+              id="cards"
+              :user="user"
+            >
+            </Cards>
+          </draggable>
+        </div>
       </div>
     </div>
-    <hr />
-    <div class="m-0">
-      <div v-if="showInput">
-        <b-form-textarea
-          id="textarea-auto-height"
-          placeholder="Enter a title for this card..."
-          size="sm"
-          rows="0"
-          max-rows="3"
-          v-model="title"
-        ></b-form-textarea>
-        <h6 class="card-header m-0 py-3 pl-3">
-          <span
-            class="btn-sm btn-primary text-white font-weight-light"
-            style="cursor:pointer"
-            @click="createTask"
-            >Add task</span
-          >
-          <span @click="showAdd" class="p-1 btn-sm" style="cursor:pointer">
-            <b-icon-x class="h5 my-0 py-0 ml-2"></b-icon-x>
-          </span>
-        </h6>
-      </div>
-
+        <div class="m-0">
+          <div v-if="showInput">
+            <b-form-textarea
+              id="textarea-auto-height"
+              placeholder="Enter a title for this card..."
+              size="sm"
+              rows="0"
+              max-rows="3"
+              v-model="title"
+            ></b-form-textarea>
+            <h6 class="card-header m-0 py-2 pl-3">
+              <span
+                class="btn-sm btn-primary text-white font-weight-light"
+                style="cursor:pointer"
+                @click="createTask"
+                >Add task</span
+              >
+              <span @click="showAdd" class="p-1 btn-sm" style="cursor:pointer">
+                <b-icon-x class="h5 my-0 py-0 ml-2"></b-icon-x>
+              </span>
+            </h6>
+          </div>
+        </div>
       <h6
         v-if="showAddBtn"
         class="card-header m-0 py-3 pl-3"
@@ -103,7 +106,6 @@
         <b-icon-plus-square-fill class="mr-2"></b-icon-plus-square-fill>
         Add another task
       </h6>
-    </div>
   </div>
 </template>
 
@@ -125,6 +127,7 @@ export default {
   data() {
     return {
       showInput: false,
+      // showInput: true,
       showAddBtn: true,
       title: '',
       id: null,

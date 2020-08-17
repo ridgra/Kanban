@@ -25,7 +25,6 @@ class CategoriesController {
     try {
       const { id } = req.params;
       const { name } = req.body;
-      console.log(id, name, '<<');
       const categories = await Category.update(
         { name },
         {
@@ -38,7 +37,6 @@ class CategoriesController {
       res.status(200).json({ categories });
       next(categories);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

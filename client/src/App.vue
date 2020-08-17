@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="vh-100">
+    <div class="d-flex flex-column" style="height:100%">
       <nav></nav>
       <LoginPage
         v-if="activePage == 'loginPage'"
@@ -80,10 +80,14 @@ export default {
             password: payload.password,
           },
         });
+        this.$notification.success(
+          'Login succesfull. Redirecting to homepage.'
+        );
         localStorage.access_token = data.access_token;
         this.homePage();
       } catch (err) {
-        console.log(err);
+        const errData = err.response.data.errors.join(' or ');
+        this.$notification.error(errData);
       }
     },
     async googleSignIn() {
@@ -111,10 +115,13 @@ export default {
             password: payload.password,
           },
         });
+        this.$notification.success(
+          'User registration succesfull. Please login.'
+        );
         this.setPage('loginPage');
-        // console.log(data);
       } catch (err) {
-        console.log(err);
+        const errData = err.response.data.errors.join(' or ');
+        this.$notification.error(errData);
       }
     },
     async fetchUser() {
@@ -125,7 +132,6 @@ export default {
             access_token: localStorage.access_token,
           },
         });
-        // console.log(data, '<<< user.email');
         this.user = data.user;
       } catch (err) {
         console.log(err);
@@ -139,7 +145,6 @@ export default {
             access_token: localStorage.access_token,
           },
         });
-        // console.log(data, '<<< fetchCat');
         this.categories = data.categories;
       } catch (err) {
         console.log(err);
@@ -157,10 +162,11 @@ export default {
             access_token: localStorage.access_token,
           },
         });
+        this.$notification.success(`${name} was created succesfully.`);
         this.fetchCategories();
-        // console.log(data, '<<< createCat');
       } catch (err) {
-        console.log(err);
+        const errData = err.response.data.errors[0];
+        this.$notification.error(errData);
       }
     },
     async updateCat(payload) {
@@ -176,10 +182,11 @@ export default {
             access_token: localStorage.access_token,
           },
         });
+        this.$notification.success(`Category was updated succesfully.`);
         this.fetchCategories();
-        // console.log(data, '<<< updated');
       } catch (err) {
-        console.log(err);
+        const errData = err.response.data.errors[0];
+        this.$notification.error(errData);
       }
     },
     async deleteCat(id) {
@@ -191,10 +198,11 @@ export default {
             access_token: localStorage.access_token,
           },
         });
+        this.$notification.success(`Category was deleted succesfully.`);
         this.fetchCategories();
-        // console.log(data, '<<< createCat');
       } catch (err) {
-        console.log(err);
+        const errData = err.response.data.errors[0];
+        this.$notification.error(errData);
       }
     },
     async createTask(task) {
@@ -210,11 +218,11 @@ export default {
             access_token: localStorage.access_token,
           },
         });
+        this.$notification.success(`${task.title} was created succesfully.`);
         this.fetchTasks();
-
-        // console.log(data, '<<< createTask');
       } catch (err) {
-        console.log(err);
+        const errData = err.response.data.errors[0];
+        this.$notification.error(errData);
       }
     },
     async fetchTasks() {
@@ -226,14 +234,12 @@ export default {
           },
         });
         this.tasks = data.tasks;
-        // console.log(data, '<<< fetchTasks');
       } catch (err) {
         console.log(err);
       }
     },
     async updateTask(payload) {
       try {
-        // console.log({ payload });
         const { id, title } = payload;
         const { data } = await axios({
           url: `/tasks/${id}`,
@@ -245,10 +251,11 @@ export default {
             title,
           },
         });
+        this.$notification.success(`Task was updated succesfully.`);
         this.fetchTasks();
-        // console.log(data, '<<< updated');
       } catch (err) {
-        console.log(err.response.data.errors.msg[0].msg);
+        const errData = err.response.data.errors[0];
+        this.$notification.error(errData);
       }
     },
     async updateTaskCategory(payload) {
@@ -264,10 +271,11 @@ export default {
             CategoryId,
           },
         });
+        this.$notification.success(`Task was updated succesfully.`);
         this.fetchTasks();
-        // console.log(data, '<<< updated cat');
       } catch (err) {
-        console.log(err.response.data.errors.msg[0].msg);
+        const errData = err.response.data.errors[0];
+        this.$notification.error(errData);
       }
     },
     async deleteTask(id) {
@@ -279,19 +287,21 @@ export default {
             access_token: localStorage.access_token,
           },
         });
+        this.$notification.success(`Task was deleted succesfully.`);
         this.fetchTasks();
-        // console.log(data, '<<< deleteTasks');
       } catch (err) {
-        console.log(err.response.data.errors.msg[0].msg);
+        const errData = err.response.data.errors[0];
+        this.$notification.error(errData);
       }
     },
     logout() {
-        // const auth2 = gapi.auth2.getAuthInstance();
-        // auth2.signOut().then(function() {
-        //   console.log('User signed out.');
-        // });
-        localStorage.clear();
-        this.setPage('loginPage');
+      // const auth2 = gapi.auth2.getAuthInstance();
+      // auth2.signOut().then(function() {
+      //   console.log('User signed out.');
+      // });
+      this.$notification.success('Logout succesfull. See you again!');
+      localStorage.clear();
+      this.setPage('loginPage');
     },
   },
   created() {
@@ -345,5 +355,14 @@ input::placeholder {
   background-repeat: no-repeat;
   background-position: top right;
   background-color: #fafafa;
+}
+
+.vn-notification {
+  margin: 10px !important;
+  padding: 10px 15px !important;
+}
+
+.vn-message {
+  margin-left: 15px !important;
 }
 </style>

@@ -44,8 +44,7 @@
           <img
             class="rounded-circle mr-2"
             height="30"
-            src="https://api.adorable.io/avatars/40/abott@adorable.pngCopy to Clipboard
-					"
+            :src="`https://api.adorable.io/avatars/285/${user.email}.png`"
             alt=""
           />
           <a class="text-white mr-4">{{ user.email }}</a>

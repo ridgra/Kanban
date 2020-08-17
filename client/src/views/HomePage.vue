@@ -1,9 +1,9 @@
 <template>
-  <section class="d-flex flex-column vh-100 justify-content-between">
+  <section class="d-flex flex-column justify-content-between">
     <div>
       <NavBar class="" :user="user" @createCat="createCat" @logout="logout"></NavBar>
 
-      <main class="d-flex m-0 px-3 py-4">
+      <main class="d-flex m-0 px-3 pt-4">
         <Categories
           v-for="(category, id) in categories"
           :key="id"

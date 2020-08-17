@@ -33,7 +33,6 @@ class TasksController {
       const task = await Task.create({ title, CategoryId, UserId });
       res.status(201).json({ task });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -60,7 +59,6 @@ class TasksController {
     try {
       const { CategoryId } = req.body;
       const { id } = req.params;
-      console.log(CategoryId, id, '<<<<');
       const task = await Task.update(
         { CategoryId },
         {

@@ -9,14 +9,31 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.hasMany(models.Task)
+      User.hasMany(models.Task);
       // define association here
     }
   }
   User.init(
     {
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: 'Email is required',
+          },
+          isEmail: {
+            msg: 'Invalid email format',
+          },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: 'Password is required',
+          },
+        },
+      },
       organization: DataTypes.STRING,
     },
     {

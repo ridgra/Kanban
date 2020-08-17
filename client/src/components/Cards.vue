@@ -75,7 +75,6 @@ export default {
     onEdit(evt) {
       const tmpTitle = evt.target.innerText;
       const payload = { id: this.task.id, title: tmpTitle };
-      console.log(tmpTitle);
       this.$emit('updateTask', payload);
       this.exitEditor();
     },
