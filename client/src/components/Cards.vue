@@ -60,17 +60,21 @@ export default {
       this.$emit('deleteTask', this.task.id);
     },
     setEditable() {
-      this.isEditable = true;
-      this.color = 'color:#ff5722';
-
-      const node = this.$refs.editable;
-      const range = document.createRange();
-      range.setStart(node, 0);
-      range.setEnd(node, 1);
-      const sel = window.getSelection();
-      node.focus();
-      sel.removeAllRanges();
-      sel.addRange(range);
+      if (this.user.id == this.task.UserId) {
+        this.isEditable = true;
+        this.color = 'color:#ff5722';
+  
+        const node = this.$refs.editable;
+        const range = document.createRange();
+        range.setStart(node, 0);
+        range.setEnd(node, 1);
+        const sel = window.getSelection();
+        node.focus();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } else {
+        this.$notification.error('Sorry, access denied');
+      }
     },
     onEdit(evt) {
       const tmpTitle = evt.target.innerText;
