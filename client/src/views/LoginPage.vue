@@ -64,7 +64,7 @@ export default {
       email: '',
       password: '',
       clientId:
-        '781316995666-u8la701llcj94cbbajmr9fao59pm2rbt.apps.googleusercontent.com',
+        '496211658526-5riqc2u8riacfr6ro880p9uq3e42cm7c.apps.googleusercontent.com',
       dismissSecs: 5,
       dismissCountDown: 0,
       showDismissibleAlert: false,

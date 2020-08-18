@@ -2,6 +2,7 @@ const { User } = require('../models');
 const { comparePassword } = require('../helpers/bcrypt');
 const { generateToken } = require('../helpers/jwt');
 const { OAuth2Client } = require('google-auth-library');
+const axios = require('axios');
 
 class UsersController {
   static async register(req, res, next) {
@@ -9,7 +10,7 @@ class UsersController {
       const { email, password } = req.body;
       await User.build({ email, password }).validate();
       const checkemail = await User.findOne({ where: { email } });
-      if (checkemail) throw {msg:'Email address is already registered'}
+      if (checkemail) throw { msg: 'Email address is already registered' };
       const user = await User.create({
         email,
         password,
@@ -45,6 +46,7 @@ class UsersController {
   static async googleSignIn(req, res, next) {
     try {
       const { idToken } = req.body;
+      
       const client = new OAuth2Client(process.env.CLIENT_ID);
       const ticket = await client.verifyIdToken({
         idToken,
@@ -73,7 +75,7 @@ class UsersController {
       const access_token = generateToken(payload);
       res.status(200).json({ access_token });
     } catch (error) {
-      next(err);
+      next(error);
     }
   }
 
