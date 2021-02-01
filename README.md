@@ -1,54 +1,28 @@
-# Kanban
+## Tralala
 
-## Buatlah aplikasi Kanban menggunakan client-server model dengan spesifikasi sebagai berikut:
-- API Documentation (server) yang meliputi:
-- URL(s)
-- HTTP Method
-- Request
-- Response (success dan error)
-- Membuat routes sesuai standar REST API
-- CRUD endpoints untuk Task, dimana minimal inputnya memiliki:
-    - title
-    - category
-- Register dan Login dimana minimal field untuk user memiliki:
-    - Email
-    - Password
-    - Organization (default hacktiv8)
-- Atribut Organization pada User, berisikan default value “Hacktiv8”. Atribut ini ditambahkan pada server sehingga akan terinput secara otomatis ketika user baru didaftarkan dan default value tidak boleh diubah dengan value lain selain “Hacktiv8”.
-(Note: Untuk case ini kegunaan organization tersebut akan terlihat ketika kalian mengerjakan socket. Ketika terjadi perubahan pada task, maka semua user yang online dan 1 organisasi akan dapat melihat perubahannya. Jika ada pertanyaan lebih lanjut mengenai hal ini, bisa tanyakan instruktur :) )
-- Membuat authorization sehingga user hanya bisa melakukan Update dan Delete terhadap task-nya sendiri
-- Melakukan Read pada semua card yang tersedia(authentication)
-- Social Login (Google/Twitter/Facebook/GitHub)
-- Vue component minimal Task dan Category
-- No alert()!!!
-- Deploy to Heroku (server) + Firebase (client) Hosting
+**Tralala** is a simple web app for Hacktiv8's bootcamp weekly assignment. Tralala is a simple kanban which is useful for project management. There is an authentication and authorization feature for each user. Tralala also has a drag and drop feature for user convenience.
 
-## Rocket 🚀
-Challenge nya masih kurang? Coba kerjain ini!
-- Buat Kanban Board kamu menjadi real time menggunakan socket.io
-- Dragable
-- Project
-- Dynamic category
+**Demo: http://bit.ly/3aiF4hU**
 
-## Kompetensi Backend
-- REST API
-- API Documentation
-- Auth
-- PostgreSQL + Sequelize + Express
+## Front-End
 
-## Kompetensi Client
-- Vue.js
-- SPA (Single Page Application)
-- Vue Component
-De
+**Features:**
 
-## Deadline
-- Week 2 - Jumat 23:59
+- **Vue** to build a single page app
 
-## Contoh
-https://kamvan-6aa69.firebaseapp.com/
-https://kanban-83af9.firebaseapp.com/
+## Back-End
 
-## Submission
-Fork dari organization, lalu open pull request dengan title NAMA LENGKAP KAMU (ex: Dimitri Wahyudiputra) dan assign ke buddy kamu. Tambahkan comment yang berisi environment variables yang dipakai (beserta valuenya), link deploy, fitur tambahannya apa dan kendala saat mengerjakan.
+**Features**:
 
+- **Express** as server with RESTful API and authentication and authorization integration. 
+- **PostgreSQL** as a database program for kanban's data
+- **JSON Web Token** for securing authorization and information exchange
+- **Bcrypt** for password-hashing functio
+- **Sequelize** as ORM for PostgreSQL
+- **Google Sign-In** integration
+
+## Deployment
+
+**Front-End**: Firebase
+
+**Back-End**: Heroku
